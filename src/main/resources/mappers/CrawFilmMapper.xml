@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace：当前XML文件用于配置哪个接口中抽象方法对应的SQL语句 -->
+<mapper namespace="com.example.craw.mapper.CrawFilmMapper">
+
+	<resultMap type="com.example.craw.domain.SmallFilm" id="film">
+		<id column="id" property="id" />
+		<result column="image" property="image" />
+		<result column="date" property="date" />
+		<result column="filmadd" property="filmadd" />
+		<result column="filmurl" property="filmurl" />
+		<result column="urltype" property="urltype" />
+		<result column="mosaic" property="mosaic" />
+		<result column="url" property="url" />
+		<result column="live" property="live" />
+		<result column="title" property="title" />
+		<result column="createdate" property="createdate" />
+	</resultMap>
+	<sql id="base">
+	id,image,date,urltype,url,title,filmurl,live
+	</sql>
+	<sql id="base_where">
+  	<where>
+  		<if test="beginDate!=null">
+  			AND date &gt;= #{beginDate}
+  		</if>
+  		<if test="endDate!=null">
+  			AND date &lt;= #{endDate}
+  		</if>
+  		<if test="state>-1">
+  			AND mosaic = #{state}
+  		</if>
+  		<if test="title!=null">
+  			AND title like  concat('%',#{title},'%' )
+  		</if>
+  		
+  	</where>
+  </sql>
+	<insert id="insertFilm" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		smallfilm(image,date,filmadd,urltype,url,createdate,title,mosaic,filmurl,live)
+		VALUES
+		(#{image},#{date},#{filmadd},#{urltype},#{url},#{createdate},#{title},#{mosaic},#{filmurl},#{live});
+	</insert>
+	<select id="selectByUrl" resultType="java.lang.Integer">
+		select
+		count(id)
+		from
+		smallfilm
+		where
+		url=#{url};
+	</select>
+	<select id="countByMosaic" resultType="java.lang.Integer">
+		select
+		count(id)
+		from
+		smallfilm
+		where 
+		mosaic=#{mosaic}
+		
+	</select>
+	<select id="countByTitle" resultType="java.lang.Integer">
+		select
+		count(id)
+		from
+		smallfilm
+		<include refid="base_where"/>
+		
+	</select>
+	<select id="selectByMosaic" resultMap="film">
+		select
+		<include refid="base"/>
+		from
+		smallfilm
+		where
+		mosaic=#{mosaic}
+		order by
+        date desc 
+        limit #{start},#{rows}
+	</select>
+	<select id="showByTime" resultMap="film">
+		select
+		<include refid="base"/>
+		from
+		smallfilm
+		order by
+		date desc 
+		limit 0,20;
+	</select>
+	<select id="selectByName" resultType="string">
+		select
+		weburl
+		from
+		weburl
+		where
+		webname=#{webname}
+	</select>
+	<update id="updateByName" >
+		update
+		weburl
+		set
+		weburl=#{weburl}
+		where
+		webname=#{webname}
+	</update>
+	<select id="selectByTitle" resultMap="film">
+		select
+        <include refid="base"/>
+        from
+        smallfilm
+        <include refid="base_where"/>
+        order by
+        date 
+        limit  #{start},#{rows}
+      
+	</select>
+	
+</mapper>
+
+   
+
+
+
+

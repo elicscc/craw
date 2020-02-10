@@ -1,0 +1,424 @@
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="Access-Control-Allow-Origin"
+	content="*">
+<title>主页</title>
+</head>
+<script src="./jquery-1.8.3.min.js"></script>
+<script src="./video.js"></script>
+<script src="./videojs-contrib-hls.min.js"></script>
+<script type="text/javascript"
+	src="./plugins/jquery.twbsPagination.min.js"></script>
+<script type="text/javascript" src="./plugins-override.js"></script>
+<script type="text/javascript" src="./My97DatePicker/WdatePicker.js"></script>
+<script src="./dist/clipboard.min.js"></script>
+<link href="./video.css" rel="stylesheet">
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<style type="text/css">
+.items {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	flex-wrap: wrap;
+}
+
+.items .item {
+	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	justify-content: start;
+	flex-wrap: wrap;
+}
+
+.masked {
+	opacity: 0.3;
+	filter: alpha(opacity = 30);
+	background-color: black;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.c1, .c2, .btn {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 14px/100% Arial, Helvetica, sans-serif;
+	padding: 5px 2px 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	color: #d9eef7;
+	border: solid 1px #0076a3;
+	background: #0095cd;
+	background: -webkit-gradient(linear, left top, left bottom, from(#0095cc),
+		to(#00678e));
+	background: -moz-linear-gradient(top, #00adee, #00678e);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee',
+		endColorstr='#00678e');
+}
+
+video {
+	object-fit: fill;
+}
+
+.a {
+	position: absolute;
+	z-index: 1;
+}
+
+.movie_date {
+	align-items: left;
+	color: #fff;
+	font-size: 12px;
+	position: absolute;
+	display: block;
+	height: 26px;
+	line-height: 26px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 13px;
+	padding: 0 13px;
+	text-shadow: 1px 1px 1px #000;
+}
+
+.p {
+	width: 200px;
+	text-overflow: -o-ellipsis-lastline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+</style>
+
+<body>
+	<div id="first" class="items">
+		<INPUT class="c1" type="button" id="btn" style="color: red;"
+			value="爬取近期" height=27 width=174> 
+			
+		<INPUT class="c1" type="button" id="btnall" style="color: red;"
+			value="爬取所有" height=27 width=174> 
+			
+			
+			<INPUT class="c1"
+			type="button" id="f5" value="最新更新" height=27 width=174> <INPUT
+			class="c1" type="button" id="wm" value="无码列表" height=27 width=174>
+		<input type="hidden" id="wmPage" name="currentPage" value="" /> <INPUT
+			class="c1" type="button" id="ym" value="有码列表" height=27 width=174>
+		<input type="hidden" id="ymPage" name="currentPage" value="" />
+		<!-- <INPUT class="select" type="text" id="select" height=27 width=174><button class="c2" id="s1">搜索</button> -->
+<iframe src="https://press.vin/embed/2eyugpch5dc0" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+		<form action="/craw/select" name="searchForm" id="form1"
+			class="form-inline" method="get">
+			<input type="hidden" id="currentPage" name="currentPage" value />
+			<div class="form-group">
+				<label>时间筛选</label> <input type="text"
+					class="form-control beginDate" name="beginDate" value />
+			</div>
+			<div class="form-group">
+				<label></label> <input type="text" class="form-control endDate"
+					name="endDate" value />
+			</div>
+			<div class="form-group">
+				<label>类型选择</label> <select class="form-control" name="state"
+					id="state">
+					<option value="-1">全部</option>
+					<option value="1">有码</option>
+					<option value="0">无码</option>
+				</select>
+
+			</div>
+			<div class="form-group">
+				<label>标题</label> <INPUT class="form-control" type="text"
+					name="title">
+				<div class="form-group">
+					<label>每页显示个数</label> <select class="form-control" name="rows"
+						id="rows">
+						<option value="10">请选择</option>
+						<option value="10">10</option>
+						<option value="20" selected="selected">20</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+						<option value="50">50</option>
+					</select>
+
+				</div>
+				<button type="button" id="s1" class="btn btn-success">
+					<i class="icon-search"></i> 查询
+				</button>
+			</div>
+		</form>
+		<div id="show" class="items"></div>
+
+
+		<div class="item">
+			<span style="font-size: 14px;">
+				<ul id="pagination" class="pagination">
+				</ul>
+			</span>
+		</div>
+	</div>
+</body>
+
+
+
+<script type="text/javascript">
+	$(function() {
+		showList();
+		$(".beginDate,.endDate").click(function() {
+			WdatePicker();
+		});
+
+		$("#s1").mousedown(function() {
+			$("#currentPage").val(1);
+			$('#pagination').empty();
+			$('#pagination').removeData("twbs-pagination");
+			$('#pagination').unbind('page');
+			s1();
+		});
+		$("#wm").mousedown(function() {
+			$("#wmPage").val(1);
+			$('#pagination').empty();
+			$('#pagination').removeData("twbs-pagination");
+			$('#pagination').unbind('page');
+			wm();
+		});
+		$("#ym").mousedown(function() {
+			$("#ymPage").val(1);
+			$('#pagination').empty();
+			$('#pagination').removeData("twbs-pagination");
+			$('#pagination').unbind('page');
+			ym();
+		});
+
+	});
+
+	function js(json) {
+		$("#show").empty();
+		var list = json.data.listData;
+		if (list == undefined) {
+			list = json.data;
+		}
+		for (var i = 0; i < list.length; i++) {
+			var li = '<div class="item">'
+					+ '<a  target="_blank" ><img  width=300px height=200px src="'+list[i].image+'"><p class="p">'
+					+ list[i].title + '</p></a><span class="movie_date">'
+					+ list[i].date.split(".")[0] + '</span>';
+			if (list[i].urltype == 1) {
+				li = li
+						+ '<form action="http://www.yd6s.com/download.php" method=post'+
+	       ' encType=multipart/form-data>'
+						+ '<INPUT name="code"  value="'+list[i].url+'" hidden="true"> <INPUT'+
+	       ' type="submit"  class="c2" value="种子下载 " name=submit'+
+	       ' valign="bottom">'
+						+ '</form></div>';
+			} else {
+				if (list[i].filmurl == 1) {
+					list[i].live = "https://4778.alicdnxvod.com" + list[i].live;
+				} else {
+					list[i].live = "https://m3u8.63cdn.com" + list[i].live;
+				}
+				li = li
+						+ '<button class="btn" data-clipboard-action="copy" data-clipboard-text="'+list[i].url+'">复制链接</button>'
+						+ '<button class="c2" onclick="cl1(this)" >在线观看</button>'
+						+ '<video id="film_'+list[i].id+'"   style="display:none;"  class="video-js vjs-big-play-centered vjs-show-big-play-button-on-pause  a" width="300px" height="200px" controls="controls"><source src="'+list[i].live+'"  type="application/x-mpegURL"></video></div>';
+
+			}
+			$("#show").append(li);
+
+		}
+	}
+
+	$("#f5").click(function() {
+		window.location.reload();
+	});
+
+	function showList() {
+		$.ajax({
+			"url" : "/craw/show",
+			"type" : "get",
+			"dataType" : "json",
+			"success" : function(json) {
+				if (json.state == 20) {
+					js(json);
+				}
+			}
+		});
+	}
+	function cl1(s) {
+		$("video").trigger('pause');
+		$(s).next().toggle();
+		var id = $(s).next().attr("id");
+		videojs(id, {
+			controls : true,
+		});
+	}
+
+	$("#btn").click(function() {
+		$("#btn").attr({"disabled" : "disabled"});
+		$("#btnall").attr({
+            "disabled" : "disabled"
+        });
+		$.ajax({
+			"url" : "/craw/pa",
+			"type" : "get",
+			"dataType" : "json",
+			"success" : function(json) {
+				if (json.state == 20) {
+					alert("爬取到:" + json.data + "条");
+					$("#btn").removeAttr("disabled");
+					   $("#btnall").removeAttr("disabled");
+					$("#show").empty();
+					showList();
+				}
+			}
+		});
+	});
+	
+	$("#btnall").click(function() {
+		$("#btn").attr({"disabled" : "disabled"});
+        $("#btnall").attr({
+            "disabled" : "disabled"
+        });
+		$.ajax({
+			"url" : "/craw/paall",
+			"type" : "get",
+			"dataType" : "json",
+			"success" : function(json) {
+				if (json.state == 20) {
+					alert("爬取到:" + json.data + "条");
+					$("#btnall").removeAttr("disabled");
+					$("#btn").removeAttr("disabled");
+					$("#show").empty();
+					showList();
+				}
+			}
+		});
+	});
+
+	
+	function wm(){
+		$("html,body").animate({scrollTop: 0}, 100);
+
+		
+		  $("#wm").attr({
+              "disabled" : "disabled"
+          });
+          $.ajax({
+              "url" : "/craw/wm",
+              "type" : "get",
+              "data" : "page=" + $("#wmPage").val() + "&rows="
+                      + $("#rows").val(),
+              "dataType" : "json",
+              "success" : function(json) {
+                  if (json.state == 20) {
+                      $("#wm").removeAttr("disabled");
+                      js(json);
+                      //分页
+
+                      $("#pagination").twbsPagination({
+                          totalPages : json.data.totalPage,
+                          visiblePages : 3,
+                          startPage : json.data.currentPage,
+                          onPageClick : function(event, page) {
+                              $("#wmPage").val(page);
+                              $("#wm").click();
+                          }
+                      });
+                  }
+              }
+          });
+	}
+	
+	$("#wm").click(function() {
+        wm();   
+    });
+	
+	$("#ym").click(function() {
+		ym();	
+	});
+	
+	function ym(){
+		$("html,body").animate({scrollTop: 0}, 100);
+		$("#ym").attr({
+            "disabled" : "disabled"
+        });
+        $.ajax({
+            "data" : "page=" + $("#ymPage").val() + "&rows="
+                    + $("#rows").val(),
+            "url" : "/craw/ym",
+            "type" : "get",
+            "dataType" : "json",
+            "success" : function(json) {
+                if (json.state == 20) {
+                    $("#ym").removeAttr("disabled");
+                    js(json);
+                    //分页
+                    $("#pagination").twbsPagination({
+                        totalPages : json.data.totalPage,
+                        visiblePages : 5,
+                        startPage : json.data.currentPage,
+                        onPageClick : function(event, page) {
+                            $("#ymPage").val(page);
+                            $("#ym").click();
+                        }
+                    });
+                }
+            }
+        
+        });
+	}
+	
+	$("#s1").click(function() {
+		s1();
+	});
+	
+	function s1() {
+		$("html,body").animate({scrollTop: 0}, 100);
+		$.ajax({
+			"url" : "/craw/select",
+			"type" : "post",
+			"dataType" : "json",
+			"data" : $("#form1").serialize(),
+			"success" : function(json) {
+				if (json.state == 20) {
+					js(json);
+					//分页
+					$("#pagination").twbsPagination({
+						totalPages : json.data.totalPage,
+						visiblePages : 3,
+						startPage : json.data.currentPage,
+						onPageClick : function(event, page) {
+							$("#currentPage").val(page);
+							$("#s1").click();
+						}
+					});
+				} 
+			}
+		});
+	}
+
+	var clipboard = new ClipboardJS('.btn');
+	clipboard.on('success', function(e) {
+		e.clearSelection();
+	});
+
+	clipboard.on('error', function(e) {
+		alert('复制失败')
+	});
+</script>
+</html>
