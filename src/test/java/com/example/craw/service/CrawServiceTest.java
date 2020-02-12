@@ -40,7 +40,7 @@ public class CrawServiceTest {
     }
     @Test
     public void te(){
-    	service.test("https://www.3567zz.com");
+    	service.test("");
     	
     }
     

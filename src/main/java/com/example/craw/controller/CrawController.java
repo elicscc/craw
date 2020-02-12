@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.example.craw.service.ex.EmptyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,15 +19,36 @@ import com.example.craw.service.CrawService;
 import com.example.craw.service.ex.ConnException;
 
 @RequestMapping("/craw")
-@RestController // 不能跳转页面
+@RestController // 不跳转页面
 public class CrawController extends BaseController {
     @Autowired
     private CrawService service;
 
+    /**
+     * 爬取东方
+     * @return
+     * @throws IOException
+     */
     @GetMapping("pa")
-    public JsonResult<Integer> craw() throws IOException {
+    public JsonResult<Integer> craw() throws IOException,RuntimeException {
         service.newWeb();
-        int s =service.crawSH()+ service.craw(1) + service.craw(2) + service.craw2(1) + service.craw2(2) ;
+        int s = service.craw(1) + service.craw(2) + service.craw2(1) + service.craw2(2) ;
+        return new JsonResult<Integer>(SUCCESS, s);
+    }
+   // @GetMapping("t666")
+    public JsonResult<Integer> craw666()  {
+        throw new EmptyException("内容为空！");
+       // throw new  RuntimeException("测试");
+    }
+    /**
+     * 爬取四虎
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("pash")
+    public JsonResult<Integer> pash() throws IOException,RuntimeException {
+        service.newWeb();
+        int s = service.crawSH();
         return new JsonResult<Integer>(SUCCESS, s);
     }
 
@@ -38,8 +60,7 @@ public class CrawController extends BaseController {
      * @throws ConnException
      */
     @GetMapping("paall")
-    public JsonResult<Integer> paAll() throws IOException {
-        service.newWeb();
+    public JsonResult<Integer> paAll() throws IOException,RuntimeException {
         service.newWeb();
         int s = service.crawALL();// + service.crawSHALL();
         return new JsonResult<Integer>(SUCCESS, s);
@@ -66,7 +87,6 @@ public class CrawController extends BaseController {
     @PostMapping("select")
     public JsonResult<PageResult> selectTitle(Integer currentPage, Integer rows, String beginDate, String endDate,
             Integer state, String title) throws ParseException {
-
         if (title == "" || title == " ") {
             title = null;
         } else {

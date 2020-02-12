@@ -40,8 +40,8 @@ public class CrawImpl implements CrawService {
     private static final String regEx_publishDate = "code=";
     private static final String reg01 = "http:\\/\\/dl";
     private static final String regEx_End = "\"";
-    private static String web;
-    private static String sh;
+    private static String web = null;
+    private static String sh = null;
     private static SmallFilm smallFilm = new SmallFilm();
 
     @Override
@@ -56,7 +56,6 @@ public class CrawImpl implements CrawService {
                 if (i > 1) {
                     url1 = new StringBuilder(url);
                     url1.append("/index_").append(i).append(".html");
-
                 } else {
                     url1 = url;
                 }
@@ -192,8 +191,13 @@ public class CrawImpl implements CrawService {
                 if (row >= 1) {
                     continue;
                 }
-                live = Jsoup.connect(live).userAgent(USERAGENT).timeout(OUTTIME).get().toString().split("\\+\"")[1]
-                        .split("\"")[0];
+
+                live = Jsoup.connect(live).userAgent(USERAGENT).timeout(OUTTIME).get().toString();
+                if (live.split("\\+\"").length == 1) {
+                    System.err.println(live);
+                    throw new RuntimeException("异常");
+                }
+                live = live.split("\\+\"")[1].split("\"")[0];
                 //System.err.println(live);
                 smallFilm.setUrl(href);
                 smallFilm.setImage(image);

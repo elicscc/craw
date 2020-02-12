@@ -10,11 +10,11 @@ import com.example.craw.service.ex.EmptyException;
 import org.springframework.util.StringUtils;
 
 public interface CrawService {
-	Integer craw(int type);
+	Integer craw(int type) throws RuntimeException;
 
-	Integer craw2(int type);
+	Integer craw2(int type) throws RuntimeException;
 
-	Integer crawSH();
+	Integer crawSH()throws RuntimeException;
 
 	PageResult findByMosaic(Integer page, Integer rows, boolean mosaic) throws EmptyException;
 

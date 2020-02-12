@@ -26,11 +26,7 @@ public class CrawFilmTest {
         
     }
     
-    @Test
-    public void select() {
-        Integer row= mapper.selectByUrl("http:\\\\dl.busdlweb.com/mp4/20191104/96.mp4");
-        System.err.println(row);
-    }
+
     
     @Test
     public void selectByName() {

@@ -22,7 +22,7 @@ public abstract class BaseController {
 	 * @param e 异常对象
 	 * @return JsonResult封装响应信息
 	 */
-	@ExceptionHandler({ EmptyException.class,IOException.class })
+	@ExceptionHandler({ EmptyException.class,IOException.class,RuntimeException.class })
 	@ResponseBody
 	public JsonResult<Void> handlerException(Throwable e) {
 		// 根据不同异常的类型提供不同的处理方式
