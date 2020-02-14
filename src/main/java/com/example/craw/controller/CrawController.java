@@ -26,42 +26,47 @@ public class CrawController extends BaseController {
 
     /**
      * 爬取东方
+     *
      * @return
      * @throws IOException
      */
     @GetMapping("pa")
-    public JsonResult<Integer> craw() throws IOException,RuntimeException {
-        service.newWeb();
-        int s = service.craw(1) + service.craw(2) + service.craw2(1) + service.craw2(2) ;
+    public JsonResult<Integer> craw() throws IOException, RuntimeException {
+        service.updateDFUrl();
+        int s = service.craw(1) + service.craw(2) + service.craw2(1) + service.craw2(2);
         return new JsonResult<Integer>(SUCCESS, s);
     }
-   // @GetMapping("t666")
-    public JsonResult<Integer> craw666()  {
+
+    // @GetMapping("t666")
+    public JsonResult<Integer> craw666() {
         throw new EmptyException("内容为空！");
-       // throw new  RuntimeException("测试");
+        // throw new  RuntimeException("测试");
     }
+
     /**
      * 爬取四虎
+     *
      * @return
      * @throws IOException
      */
     @GetMapping("pash")
-    public JsonResult<Integer> pash() throws IOException,RuntimeException {
-        service.newWeb();
+    public JsonResult<Integer> pash() throws IOException, RuntimeException {
+        service.updateSHUrl();
         int s = service.crawSH();
         return new JsonResult<Integer>(SUCCESS, s);
     }
 
     /**
      * 爬所有网页
-     * 
+     *
      * @return
      * @throws IOException
      * @throws ConnException
      */
     @GetMapping("paall")
-    public JsonResult<Integer> paAll() throws IOException,RuntimeException {
-        service.newWeb();
+    public JsonResult<Integer> paAll() throws IOException, RuntimeException {
+       // service.updateSHUrl();
+        service.updateDFUrl();
         int s = service.crawALL();// + service.crawSHALL();
         return new JsonResult<Integer>(SUCCESS, s);
     }
@@ -86,7 +91,7 @@ public class CrawController extends BaseController {
 
     @PostMapping("select")
     public JsonResult<PageResult> selectTitle(Integer currentPage, Integer rows, String beginDate, String endDate,
-            Integer state, String title) throws ParseException {
+                                              Integer state, String title) throws ParseException {
         if (title == "" || title == " ") {
             title = null;
         } else {

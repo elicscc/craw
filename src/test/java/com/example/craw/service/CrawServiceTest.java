@@ -33,11 +33,11 @@ public class CrawServiceTest {
         System.err.println(service.crawSH());
         
     }
-    @Test
+   /* @Test
     public void newWeb() throws IOException{
         System.err.println(service.newWeb());
         
-    }
+    }*/
     @Test
     public void te(){
     	service.test("");

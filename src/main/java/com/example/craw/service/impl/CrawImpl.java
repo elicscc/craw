@@ -407,12 +407,9 @@ public class CrawImpl implements CrawService {
      * @throws IOException
      */
     @Override
-    public Integer newWeb() throws IOException {
+    public Integer updateDFUrl() throws IOException {
         int s = 0;
         web = mapper.selectByName("web");
-        sh = mapper.selectByName("sh");
-
-
         Document doc = Jsoup.connect(web + "/move/1").get();
         Elements divsBig = doc.getElementsByClass("box movie2_list");
         if (divsBig.isEmpty()) {
@@ -422,7 +419,13 @@ public class CrawImpl implements CrawService {
             mapper.updateByName("web", str);
             s++;
         }
+        return s;
+    }
 
+    @Override
+    public Integer updateSHUrl() throws IOException {
+        int s = 0;
+        sh = mapper.selectByName("sh");
         URL serverUrl = new URL(sh);
         HttpURLConnection conn = (HttpURLConnection) serverUrl.openConnection();
         conn.setConnectTimeout(OUTTIME);
