@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：当前XML文件用于配置哪个接口中抽象方法对应的SQL语句 -->
+<mapper namespace="com.example.craw.mapper.RqMapper">
+	<resultMap type="com.example.craw.domain.Agency" id="Agency">
+		<id column="id" property="id" />
+		<result column="companyname" property="companyName" />
+		<result column="linkname" property="linkName" />
+		<result column="linkmobile" property="linkMobile" />
+		<result column="mainbiz" property="mainBiz" />
+		<result column="country" property="country" />
+	</resultMap>
+
+	<resultMap type="com.example.craw.domain.Req" id="Req">
+		<id column="id" property="id" />
+		<result column="companyname" property="companyName" />
+		<result column="linkname" property="linkName" />
+		<result column="linkmobile" property="linkMobile" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="address" property="address" />
+		<result column="remark" property="remark" />
+		<result column="jobname" property="jobName" />
+		<result column="jobreq" property="jobReq" />
+		<result column="count" property="count" />
+		<result column="wage" property="wage" />
+		<result column="createtime" property="createTime" />
+	</resultMap>
+
+	<sql id="base">
+	id,companyname,linkname,linkmobile,province,city,address,remark,jobname,jobreq,count,wage,createtime
+	</sql>
+
+	<sql id="base_where">
+  	<where>
+  		<if test="beginDate!=null">
+  			AND createtime &gt;= #{beginDate}
+  		</if>
+  		<if test="endDate!=null">
+  			AND createtime &lt;= #{endDate}
+  		</if>
+  		<if test="title !=null">
+  			AND jobname like  concat('%',#{title},'%' )
+  		</if>
+  	</where>
+  </sql>
+
+	<sql id="base_ag">
+		<where>
+			<if test="title !=null">
+				AND companyname like  concat('%',#{title},'%' )
+			</if>
+		</where>
+	</sql>
+	<select id="selectRsReq" resultMap="Req">
+		select
+		<include refid="base"/>
+		from rsreq
+		<include refid="base_where"/>
+		order by
+		createtime
+		limit  #{start},#{rows}
+	</select>
+
+	<select id="selectReq" resultMap="Req">
+		select
+		<include refid="base"/>
+		from req
+		<include refid="base_where"/>
+		order by
+		createtime
+		limit  #{start},#{rows}
+	</select>
+
+	<select id="selectAgency" resultMap="Agency">
+		select
+		id,companyname,linkname,linkmobile,mainbiz,country
+		from  rsagency
+		<include refid="base_ag"/>
+		limit  #{start},#{rows}
+	</select>
+
+	<select id="countAgency" resultType="java.lang.Integer">
+		select
+		count(id)
+		from  rsagency
+		<include refid="base_ag"/>
+	</select>
+
+	<select id="countRsReq" resultType="java.lang.Integer">
+		select
+		count(*)
+		from  rsreq
+		<include refid="base_where"/>
+	</select>
+
+	<select id="countReq" resultType="java.lang.Integer">
+		select
+		count(*)
+		from  req
+		<include refid="base_where"/>
+	</select>
+
+	<insert id="saveAgency" parameterType="java.util.List" >
+		INSERT INTO
+		rsagency
+		(
+		id,companyname,linkname,linkmobile,mainbiz,country
+		)
+		values
+		<foreach collection="list" item="item"  separator =",">
+			(
+			#{item.id},
+			#{item.companyName},
+			#{item.linkName},
+			#{item.linkMobile},
+			#{item.mainBiz},
+			#{item.country}
+			)
+		</foreach>
+	</insert>
+
+	<insert id="saveRsReq" parameterType="java.util.List" >
+		INSERT INTO
+		rsreq
+		(
+		<include refid="base"/>
+		)
+		values
+		<foreach collection="list" item="item"  separator =",">
+			(
+			#{item.id},
+			#{item.companyName},
+			#{item.linkName},
+			#{item.linkMobile},
+			#{item.province},
+			#{item.city},
+			#{item.address},
+			#{item.remark},
+			#{item.jobName},
+			#{item.jobReq},
+			#{item.count},
+			#{item.wage},
+			#{item.createTime}
+			)
+		</foreach>
+	</insert>
+
+	<insert id="saveReq" parameterType="java.util.List" >
+		INSERT INTO
+		req
+		(
+		<include refid="base"/>
+		)
+		values
+		<foreach collection="list" item="item"  separator =",">
+			(
+			#{item.id},
+			#{item.companyName},
+			#{item.linkName},
+			#{item.linkMobile},
+			#{item.province},
+			#{item.city},
+			#{item.address},
+			#{item.remark},
+			#{item.jobName},
+			#{item.jobReq},
+			#{item.count},
+			#{item.wage},
+			#{item.createTime}
+			)
+		</foreach>
+	</insert>
+</mapper>
+
+   
+
+
+
+

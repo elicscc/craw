@@ -50,7 +50,6 @@ public class CrawImpl implements CrawService {
         StringBuilder url = new StringBuilder(web);
         StringBuilder url1 = null;
         url.append("/down/").append(type);
-
         try {
             for (int i = 1; i <= 2; i++) {
                 if (i > 1) {
@@ -215,7 +214,6 @@ public class CrawImpl implements CrawService {
         } catch (IOException | ParseException e) {
             throw new RuntimeException("crawSH连接超时");
         }
-
         return sum;
     }
 
@@ -228,8 +226,6 @@ public class CrawImpl implements CrawService {
             return new PageResult(m, total, page, rows);
         }
         return PageResult.empty(rows);
-
-
     }
 
     @Override
@@ -243,7 +239,6 @@ public class CrawImpl implements CrawService {
 
     @Override
     public PageResult selectTitle(Integer currentPage, Integer rows, Date beginDate, Date endDate, Integer state, String title) throws EmptyException {
-
         int total = mapper.countByTitle(beginDate, endDate, state, title);
         if (total > 0) {
             int start = (currentPage - 1) * rows;
@@ -255,11 +250,8 @@ public class CrawImpl implements CrawService {
 
     @Override
     public Integer crawALL() {
-
         int sum = extracted2(1) + extracted2(2) + extracted(1) + extracted(2);
         return sum;
-
-
     }
 
     private int extracted2(int type) {

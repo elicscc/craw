@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：当前XML文件用于配置哪个接口中抽象方法对应的SQL语句 -->
+<mapper namespace="com.example.craw.mapper.UserMapper">
+
+    <resultMap type="com.example.craw.domain.User" id="user2">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+
+    </resultMap>
+
+    <sql id="base_where">
+    <where>
+        <if test="beginDate!=null">
+            AND date &gt;= #{beginDate}
+        </if>
+        <if test="endDate!=null">
+            AND date &lt;= #{endDate}
+        </if>
+        <if test="state>-1">
+            AND mosaic = #{state}
+        </if>
+        <if test="title!=null">
+            AND title like
+        </if>
+
+    </where>
+    </sql>
+    <update id="updateUser"  >
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="age != null"> age=#{age},</if>
+            <if test="sex != null"> sex=#{sex},</if>
+        </trim>
+        where
+        id=#{id}
+    </update>
+<select id="findByName"  resultType="User">
+SELECT *
+FROM user
+WHERE username=#{username}
+
+
+
+</select>
+
+<select id="findById"   resultType="User">
+SELECT *
+FROM user
+WHERE id=#{id}
+
+
+
+</select>
+
+    <select id="findAll" resultType="User">
+SELECT *
+FROM user
+</select>
+
+
+
+</mapper>

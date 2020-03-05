@@ -1,5 +1,6 @@
 package com.example.craw.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SmallFilm {
+public class SmallFilm implements Serializable {
     private Integer id;
     private boolean mosaic;//0是无码 1是有码
     private String image;

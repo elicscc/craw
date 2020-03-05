@@ -29,7 +29,6 @@ public interface CrawFilmMapper {
 
     List<SmallFilm> selectByTitle(@Param("start")Integer start,@Param("rows")Integer rows,@Param("beginDate")Date beginDate ,@Param("endDate")Date endDate ,@Param("state")Integer state,@Param("title")String title);
 
-
 	int countByMosaic(boolean mosaic);
 
 	int countByTitle(@Param("beginDate")Date beginDate ,@Param("endDate")Date endDate ,@Param("state")Integer state,@Param("title")String title);
