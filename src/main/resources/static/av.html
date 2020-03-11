@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <!-- 引入样式 -->
-<link href="video.css" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<!-- 引入组件库 -->
 
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<link href="video.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>AV之家</title>
@@ -203,8 +206,6 @@
 
 </el-footer>
 </div>
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="jquery-1.8.3.min.js"></script>
 <script src="video.js"></script>
@@ -284,12 +285,12 @@
         methods: {
 
              cl1(s) {
-        $("video").trigger('pause');
-        $(s).next().toggle();
-        var id = $(s).next().attr("id");
-        videojs(id, {
-            controls: true,
-        });
+        // $("video").trigger('pause');
+        // $(s).next().toggle();
+        // var id = $(s).next().attr("id");
+        // videojs(id, {
+        //     controls: true,
+        // });
     },
             down() {
 
@@ -327,7 +328,7 @@
             },
             df() {
                 this.isDisabled1=true;
-                axios.get('/craw/pa')
+                axios.get('/craw/padf')
                     .then(response => {
                         if (response.data.status === 20) {
                             alert("所有页面爬取到:" + response.data.data + "条");
@@ -335,6 +336,13 @@
                                 type:"success",
                                 message:"所有页面爬取到:" + response.data.data + "条"
                             })
+                            this.doQuery();
+                        }else {
+                            this.$message({
+                                type:"error",
+                                message:"爬取失败"
+                            })
+
                         }
                         this.isDisabled1=false;
                     })
@@ -348,6 +356,12 @@
                             this.$message({
                                 type:"success",
                                 message:"所有页面爬取到:" + response.data.data + "条"
+                            })
+                            this.doQuery();
+                        }else {
+                            this.$message({
+                                type:"error",
+                                message:"爬取失败"
                             })
                         }
                         this.isDisabled2=false;

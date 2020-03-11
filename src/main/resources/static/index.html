@@ -40,7 +40,9 @@
         </el-menu>
 
     </el-header>
-
+    <span style="margin: auto ">
+            <el-button @click="sh" :disabled="isDisabled2" type="primary" round>手动爬取</el-button>
+        </span>
 
     <el-main>
         <H3 >社交项目招聘模块相关数据展示
@@ -218,7 +220,7 @@
                 formData:[],
                 activeIndex: '1',
                 activeIndex2: '1',
-
+                isDisabled2:false,
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -263,7 +265,25 @@
                 return new Date(date).toLocaleDateString('zh').replace(RegExp(/\//g),'-');
             },
 
-
+            sh() {
+                this.isDisabled2=true;
+                axios.get('/gz/pa')
+                    .then(response => {
+                        if (response.data.status === 20) {
+                            this.$message({
+                                type:"success",
+                                message:"爬取完毕"
+                            })
+                            this.doQuery();
+                        }else {
+                            this.$message({
+                                type:"error",
+                                message:"爬取失败"
+                            })
+                        }
+                        this.isDisabled2=false;
+                    })
+            },
             handleClick(item) {
                 // this.formData = {
                 //     ...item

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.craw.domain.SmallFilm;
 import com.example.craw.service.CrawService;
 import com.example.craw.service.ex.ConnException;
-
+@CrossOrigin
 @RequestMapping("/craw")
 @RestController
 public class CrawController extends BaseController {
@@ -27,7 +27,7 @@ public class CrawController extends BaseController {
      * @return
      * @throws IOException
      */
-    @GetMapping("/pa")
+    @GetMapping("/padf")
     public JsonResult craw() throws IOException, RuntimeException {
         //System.err.println("开始检查url");
         service.updateDFUrl();
