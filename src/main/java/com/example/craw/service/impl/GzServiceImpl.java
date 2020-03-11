@@ -26,9 +26,11 @@ public class GzServiceImpl implements GzService {
         Page<Req> page=new Page<Req>(currentPage,rows);
         QueryWrapper<Req> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("type",state);
+
         if (title!=null){queryWrapper.like("job_name",title);}
         if (beginDate!=null){ queryWrapper.ge("create_time",beginDate);}
         if (endDate!=null){ queryWrapper.le("create_time",endDate);}
+        queryWrapper.orderByDesc("create_time");
         return reqMapper.selectPage(page,queryWrapper);
     }
 
@@ -40,6 +42,7 @@ public class GzServiceImpl implements GzService {
         if (title!=null){queryWrapper.like("job_name",title);}
         if (beginDate!=null){ queryWrapper.ge("create_time",beginDate);}
         if (endDate!=null){ queryWrapper.le("create_time",endDate);}
+        queryWrapper.orderByDesc("create_time");
         return reqMapper.selectPage(page,queryWrapper);
     }
 
