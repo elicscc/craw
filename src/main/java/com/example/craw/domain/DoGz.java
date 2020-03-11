@@ -2,10 +2,12 @@ package com.example.craw.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class DoGz {
+public class DoGz implements Serializable {
+
   private   Integer currentPage;
     private  Integer rows;
     private Date beginDate;

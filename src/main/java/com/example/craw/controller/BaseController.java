@@ -14,7 +14,7 @@ public abstract class BaseController {
 
 	protected static final Integer SUCCESS = 20;
 	// 静态常量的命名：所有字母都大写，单词用_隔开，尽量说明白，不要嫌长
-	protected static final Integer ERROR_USERNAME_DUPLICATE = 30;
+	protected static final Integer ERROR_USERNAME_DUPLICATE = 404;
 
 	/**
 	 * 对控制器中的异常进行统一处理
@@ -24,13 +24,14 @@ public abstract class BaseController {
 	 */
 	@ExceptionHandler({ EmptyException.class,IOException.class,RuntimeException.class })
 	@ResponseBody
-	public JsonResult<Void> handlerException(Throwable e) {
+	public JsonResult handlerException(Throwable e) {
 		// 根据不同异常的类型提供不同的处理方式
 		// 现在的处理方式是根据不同的类型，返回不同的状态码
-		JsonResult<Void> jr = new JsonResult<>(e.getMessage());
+		JsonResult jr = new JsonResult();
+		jr.setMessage(e.getMessage());
 
 		if (e instanceof EmptyException) {
-			jr.setState(ERROR_USERNAME_DUPLICATE);
+			jr.setStatus(ERROR_USERNAME_DUPLICATE);
 			/*
 			 * } else if (e instanceof UserNotFoundException) { jr.setState(31); } else if
 			 * (e instanceof PasswordNotMatchException) { jr.setState(32); } else if (e

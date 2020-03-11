@@ -12,20 +12,20 @@ import com.example.craw.mapper.CrawFilmMapper;
 
 @SpringBootTest
 class CrawApplicationTests {
-@Autowired 
+@Autowired
 CrawFilmMapper mapper;
-private 
+private
 	@Test
 	void contextLoads() {
-	    
+
 	}
 	@Test
 	private void s() {
 	    SmallFilm s=new SmallFilm() ;
-	    s.setFilmadd("测试");
+	   // s.setFilmadd("测试");
 	    s.setImage("测试");
-	    mapper.insertFilm(s);
-	    
+	   // mapper.insertFilm(s);
+
 	}
 
 }

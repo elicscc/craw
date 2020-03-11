@@ -3,7 +3,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace：当前XML文件用于配置哪个接口中抽象方法对应的SQL语句 -->
-<mapper namespace="com.example.craw.mapper.RqMapper">
+<mapper namespace="com.example.craw.mapper.ReqMapper">
 	<resultMap type="com.example.craw.domain.Agency" id="Agency">
 		<id column="id" property="id" />
 		<result column="companyname" property="companyName" />

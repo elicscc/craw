@@ -209,7 +209,7 @@
 
     function js(json) {
         $("#show").empty();
-        var list = json.data.listData;
+        var list = json.data.records;
         if (list == undefined) {
             list = json.data;
         }
@@ -382,7 +382,6 @@
                     $("#wm").removeAttr("disabled");
                     js(json);
                     //分页
-
                     $("#pagination").twbsPagination({
                         totalPages: json.data.totalPage,
                         visiblePages: 3,
