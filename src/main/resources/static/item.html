@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/amazeui.min.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/amaze.min.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/toastr.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/css/public.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>数据明细</title>
+</head>
+<style>
+    .foot-bar {
+        color: #999;
+        font-size: 14px;
+        margin-left: 36px;
+    }
+
+    .amz-footer a:hover {
+        color: #FA4E4E;
+    }
+
+    .header-bar {
+        color: #333;
+        font-size: 16px;
+        display: inline-block;
+        height: 83;
+    }
+
+    .am-projects-misc .active {
+        border-bottom: 4px solid #f75053;
+        color: #f75053;
+        font-weight: 700;
+    }
+
+    .amaze-input {
+        width: 256px;
+        height: 42px;
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        margin-left: 20px;
+        font-size: 14px;
+        padding-left: 8px;
+        color: #333;
+    }
+
+    .condition-bar {
+        color: #666;
+        font-size: 14px;
+        margin-left: 30px;
+        padding: 4px 8px;
+
+    }
+
+    .condition-bar:hover {
+        color: #f75053;
+
+    }
+
+    .condition-bar-title {
+        margin-left: 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .condition-div .current {
+        color: #f75053;
+        border: 1px solid #f75053;
+        border-radius: 4px;
+        box-sizing: border-box;
+        /* width: 230px; */
+        margin-left: 28px;
+
+    }
+
+    .fipro-am-badge {
+        background-color: #fff;
+        border: 1px solid #f75053;
+        color: #f75053;
+        border-radius: 4px;
+        padding: 5px 9px;
+        margin-left: 22px;
+        font-weight: 500;
+    }
+
+    .prologo-img {
+        margin-left: 29px;
+        width: 97px;
+        height: 28px;
+    }
+
+    .am-list-item-hd .proname-a {
+        color: #333;
+        font-size: 16px;
+        margin-left: 30px;
+    }
+
+    .prodetail-ul li > .prodetail-a {
+        padding: 0.75em 1.7em;
+        color: #fff;
+        border-radius: 4px;
+        background-color: #FA4E4E;
+        font-size: 14px;
+    }
+
+    .prodetail-ul li > .pro-process {
+        width: 180px;
+        border-radius: 4px;
+        margin-top: 11px;
+    }
+
+    .am-order-div {
+        width: 1200px;
+        background-color: #fff;
+        margin: 0 auto;
+        height: 60px;
+        padding-left: 20px;
+        margin-top: 20px;
+        border-bottom: 1px solid #ebebeb;
+        line-height: 60px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .orderActive {
+        color: #2985EB;
+        font-weight: 700
+    }
+
+    .order-span:hover {
+        cursor: pointer;
+    }
+
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: #999;
+        padding-left: 1px;
+    }
+
+
+</style>
+<body>
+
+
+<div id="app">
+    <el-header>
+        <el-menu
+                :default-active="activeIndex2"
+                class="el-menu-demo"
+                mode="horizontal"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-submenu index="2">
+                <template slot="title">我的工作台</template>
+                <el-menu-item index="2-1">选项1</el-menu-item>
+                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="2-3">选项3</el-menu-item>
+                <el-submenu index="2-4">
+                    <template slot="title">选项4</template>
+                    <el-menu-item index="2-4-1">选项1</el-menu-item>
+                    <el-menu-item index="2-4-2">选项2</el-menu-item>
+                    <el-menu-item index="2-4-3">选项3</el-menu-item>
+                </el-submenu>
+            </el-submenu>
+            <el-menu-item index="3">消息中心</el-menu-item>
+
+        </el-menu>
+
+    </el-header>
+
+
+    <el-main>
+        <H3>金融项目相关数据展示
+        </H3>
+
+
+        <el-row>
+
+                <li class="am-g am-list-item-desced" style="height:190px;">
+                    <div class="am-list-item-hd" style="padding-top:20px;padding-bottom:20px;"><img class="prologo-img"
+                                                                                                    :src="'http://218.22.70.146:8082//'+o.logoname"><a
+                            class="proname-a" style="">{{o.productname}}</a>
+                        <span v-if="o.guarantytype==3" class="am-badge fipro-am-badge" style="">保证</span>
+                        <span v-if="o.guarantytype==4" class="am-badge fipro-am-badge" style="">信用</span>
+                        <span v-if="o.guarantytype==-1" class="am-badge fipro-am-badge" style="">不限</span>
+                    </div>
+                    <div class="am-list-item-text" style="padding-left:60px;max-height:none;">
+                        <ul class="am-avg-sm-5 am-thumbnails prodetail-ul" style="">
+                            <li style="padding-top:10px;text-align:left;"><span
+                                    style="font-size:28px;color:#ea2629">{{o.ratelower}}</span><span
+                                    style="font-size:14px;color:#ea2629">%-</span><span
+                                    style="font-size:28px;color:#ea2629">{{o.rateupper}}</span><span
+                                    style="font-size:14px;color:#ea2629">%</span><br>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">参考利率范围</p></li>
+                            <li style="padding-top:10px;padding-left:70px;"><p
+                                    style="color:#333;font-size:18px;line-height:23px;">
+                                {{o.durationlower}}-{{o.durationupper}}个月</p>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">贷款期限</p></li>
+                            <li style="padding-top:10px;padding-left:30px;"><p
+                                    style="color:#333;font-size:18px;line-height:23px;">
+                                {{o.loanamountlower}}-{{o.loanamountupper}}万</p>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">贷款额度</p></li>
+                            <li style="padding-top:10px;">
+
+
+                                <el-progress :text-inside="true" :stroke-width="18"
+                                             :percentage="o.completeRate"></el-progress>
+
+                                <p style="color:#999;font-size:14px;">成功率{{o.completeRate}}%</p></li>
+                            <li style="padding-top:10px;text-align:center;padding-top:6px;"><a class="am-btn am-btn-danger prodetail-a" style="" href="#">立即申请</a>
+                                <p style="color:#999;font-size:14px;margin-top: 0.6rem;">{{o.applyNum}}家企业申请</p></li>
+                        </ul>
+                    </div>
+                </li>
+
+            <div style="width:1200px;margin:0 auto;background-color:#fff;margin-top:20px;">
+                <div style="width:1200px;height:60px;line-height:60px;font-size:16px;color:#333;font-weight:700;border-bottom:1px solid #F5F6FA;padding-left:29px;">
+                    项目详情
+                </div>
+                <div style="width: 100%;padding-bottom:30px;">
+                    <div data-am-widget="list_news" class="am-list-news am-list-news-default am-no-layout">
+                        <div class="am-list-news-bd">
+                            <ul class="am-list" style="padding-left:20px;padding-right:30px;">
+                                <li class="am-g am-list-item-desced" style="border:none;">
+                                    <a href="#" class="am-list-item-hd " style="font-size:16px;color:#333;">产品简介</a>
+                                    <div id="detail_prochr" class="am-list-item-text" style="margin-top:10px;font-size:14px;color:#666;">{{o.productdec}}</div>
+                                </li>
+                                <li class="am-g am-list-item-desced" style="border:none;margin-top:15px;">
+                                    <a href="#" class="am-list-item-hd " style="font-size:16px;color:#333;">适用客户</a>
+                                    <div id="detail_use" class="am-list-item-text" style="margin-top:10px;font-size:14px;color:#666;">{{o.targetobligor}}</div>
+                                </li>
+                                <li class="am-g am-list-item-desced" style="border:none;margin-top:15px;">
+                                    <a href="#" class="am-list-item-hd " style="font-size:16px;color:#333;">申请条件</a>
+                                    <div id="detail_select" class="am-list-item-text" style="margin-top:10px;font-size:14px;color:#666;">{{o.applycondition}}</div>
+                                </li>
+                                <li class="am-g am-list-item-desced" style="border:none;margin-top:15px;">
+                                    <a href="#" class="am-list-item-hd " style="font-size:16px;color:#333;">提交材料</a>
+                                    <div id="detail_desc" class="am-list-item-text" style="margin-top:10px;font-size:14px;color:#666;">{{o.applymaterial}}</div>
+                                </li>
+                                <li class="am-g am-list-item-desced" style="border:none;margin-top:15px;">
+                                    <a href="#" disabled="" class="am-list-item-hd " style="font-size:16px;color:#333;">申请流程</a>
+                                    <div id="flow" class="am-list-item-text" style="margin-top:10px;font-size:14px;color:#666;">{{o.flow}}</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </el-row>
+
+
+    </el-main>
+
+    <el-footer>
+
+        本页面未违反爬虫协议,如有问题请联系我删除
+    </el-footer>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+
+        data() {
+            return {
+                activeIndex2:"",
+                o: {},  //数据
+            };
+        },
+        created: function () {
+            this.doQuery();
+        },
+        methods: {
+            getUrlParam (name){
+                let reg = new RegExp("(^|&)"+name+"=([^&]*)(&|$)");
+                let r = window.location.search.substr(1).match(reg);
+                if(r != null)
+                    return unescape(r[2]);
+                return null;
+            },
+            doQuery() {
+                let pid=this.getUrlParam("id")
+                axios.get('/jr/item/'+pid)
+                    .then(response => {
+                        if (response.data.status === 20) {
+                            this.o = response.data.data;
+                        }
+                    })
+            },
+            click() {
+
+            }
+        }
+    })
+</script>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/amazeui.min.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/amaze.min.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/assets/css/toastr.css">
+<link rel="stylesheet" href="http://whjr.wh.cn/css/public.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>大数据展示页</title>
+</head>
+<style>
+    .foot-bar {
+        color: #999;
+        font-size: 14px;
+        margin-left: 36px;
+    }
+
+    .amz-footer a:hover {
+        color: #FA4E4E;
+    }
+
+    .header-bar {
+        color: #333;
+        font-size: 16px;
+        display: inline-block;
+        height: 83px;
+    }
+
+    .am-projects-misc .active {
+        border-bottom: 4px solid #f75053;
+        color: #f75053;
+        font-weight: 700;
+    }
+
+    .amaze-input {
+        width: 256px;
+        height: 42px;
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        margin-left: 20px;
+        font-size: 14px;
+        padding-left: 8px;
+        color: #333;
+    }
+
+    .condition-bar {
+        color: #666;
+        font-size: 14px;
+        margin-left: 30px;
+        padding: 4px 8px;
+
+    }
+
+    .condition-bar:hover {
+        color: #f75053;
+
+    }
+
+    .condition-bar-title {
+        margin-left: 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .condition-div .current {
+        color: #f75053;
+        border: 1px solid #f75053;
+        border-radius: 4px;
+        box-sizing: border-box;
+        /* width: 230px; */
+        margin-left: 28px;
+
+    }
+
+    .fipro-am-badge {
+        background-color: #fff;
+        border: 1px solid #f75053;
+        color: #f75053;
+        border-radius: 4px;
+        padding: 5px 9px;
+        margin-left: 22px;
+        font-weight: 500;
+    }
+
+    .prologo-img {
+        margin-left: 29px;
+        width: 97px;
+        height: 28px;
+    }
+
+    .am-list-item-hd .proname-a {
+        color: #333;
+        font-size: 16px;
+        margin-left: 30px;
+    }
+
+    .prodetail-ul li > .prodetail-a {
+        padding: 0.75em 1.7em;
+        color: #fff;
+        border-radius: 4px;
+        background-color: #FA4E4E;
+        font-size: 14px;
+    }
+
+    .prodetail-ul li > .pro-process {
+        width: 180px;
+        border-radius: 4px;
+        margin-top: 11px;
+    }
+
+    .am-order-div {
+        width: 1200px;
+        background-color: #fff;
+        margin: 0 auto;
+        height: 60px;
+        padding-left: 20px;
+        margin-top: 20px;
+        border-bottom: 1px solid #ebebeb;
+        line-height: 60px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .orderActive {
+        color: #2985EB;
+        font-weight: 700
+    }
+
+    .order-span:hover {
+        cursor: pointer;
+    }
+
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #999;
+        padding-left: 1px;
+    }
+
+    input:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: #999;
+        padding-left: 1px;
+    }
+
+
+</style>
+<body>
+
+
+<div id="app">
+    <el-header>
+        <el-menu
+                :default-active="activeIndex2"
+                class="el-menu-demo"
+                mode="horizontal"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-submenu index="2">
+                <template slot="title">我的工作台</template>
+                <el-menu-item index="2-1">选项1</el-menu-item>
+                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="2-3">选项3</el-menu-item>
+                <el-submenu index="2-4">
+                    <template slot="title">选项4</template>
+                    <el-menu-item index="2-4-1">选项1</el-menu-item>
+                    <el-menu-item index="2-4-2">选项2</el-menu-item>
+                    <el-menu-item index="2-4-3">选项3</el-menu-item>
+                </el-submenu>
+            </el-submenu>
+            <el-menu-item index="3">消息中心</el-menu-item>
+
+        </el-menu>
+
+    </el-header>
+
+    <el-main>
+        <H3>金融项目相关数据
+        </H3>
+
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+            <!--            <el-form-item style="width:110px">-->
+            <!--                <el-select v-model="formInline.state" placeholder="请选择">-->
+            <!--                    <el-option label="1" value="1"></el-option>-->
+            <!--                    <el-option label="2" value="2"></el-option>-->
+            <!--                    <el-option label="3" value="3"></el-option>-->
+            <!--                </el-select>-->
+            <!--            </el-form-item>-->
+            <el-form-item>
+                <el-input v-model="formInline.financename" placeholder="输入机构名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input v-model="formInline.queryname" placeholder="输入您要搜索的产品"></el-input>
+            </el-form-item>
+
+
+            <el-form-item label="时间筛选">
+                <el-date-picker
+                        v-model="DataSelect"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                </el-date-picker>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-search" @click="select">搜索</el-button>
+            </el-form-item>
+
+            <p style="font-size:16px;font-weight:bold;padding-bottom: 20px;">产品筛选</p>
+            融资渠道：找不到对应的字段！！
+            <!--            <el-form-item label="融资渠道：">-->
+            <!--                <el-radio-group v-model="formInline.financeChannel" size="medium">-->
+            <!--                    <el-radio-button  label="" @click.native="select">不限</el-radio-button>-->
+            <!--                    <el-radio-button  label="10" @click.native="select">小贷</el-radio-button>-->
+            <!--                    <el-radio-button   label="11" @click.native="select">创投</el-radio-button>-->
+            <!--                    <el-radio-button   label="13" @click.native="select">保理</el-radio-button>-->
+            <!--                    <el-radio-button   label="14" @click.native="select">投资公司</el-radio-button>-->
+            <!--                    <el-radio-button   label="1" @click.native="select">银行</el-radio-button>-->
+            <!--                    <el-radio-button   label="2" @click.native="select">担保</el-radio-button>-->
+            <!--                    <el-radio-button   label="3" @click.native="select">保险</el-radio-button>-->
+            <!--                    <el-radio-button   label="4" @click.native="select">证券</el-radio-button>-->
+            <!--                    <el-radio-button   label="5" @click.native="select">基金</el-radio-button>-->
+            <!--                </el-radio-group>-->
+            <!--            </el-form-item>-->
+            <br>
+            融资期限：找不到对应的字段！！
+<!--            <el-form-item label="融资期限：">-->
+<!--                <el-radio-group v-model="formInline.loandate" size="medium">-->
+<!--                    <el-radio-button label="" @click.native="select">不限</el-radio-button>-->
+<!--                    <el-radio-button label="3" @click.native="select">3个月以下</el-radio-button>-->
+<!--                    <el-radio-button label="6" @click.native="select">6个月以下</el-radio-button>-->
+<!--                    <el-radio-button label="9" @click.native="select">9个月以下</el-radio-button>-->
+<!--                    <el-radio-button label="12" @click.native="select">12个月以下</el-radio-button>-->
+<!--                    <el-radio-button label="more" @click.native="select">12个月以上</el-radio-button>-->
+<!--                </el-radio-group>-->
+<!--            </el-form-item>-->
+            <br>
+            <el-form-item label="担保方式：">
+                <el-radio-group v-model="formInline.guatype" size="medium" @change="select">
+                    <el-radio-button label="" >不限</el-radio-button>
+                    <el-radio-button label="4" >信用</el-radio-button>
+                    <el-radio-button label="1" >抵押</el-radio-button>
+                    <el-radio-button label="2" >质押</el-radio-button>
+                    <el-radio-button label="3" >保证</el-radio-button>
+                </el-radio-group>
+            </el-form-item>
+            <br>
+            <el-form-item label="融资额度：">
+                <el-radio-group v-model="formInline.loanLimit" size="medium" @change="select">
+                    <el-radio-button label="" >不限</el-radio-button>
+                    <el-radio-button label="100" >100万</el-radio-button>
+                    <el-radio-button label="200" >200万</el-radio-button>
+                    <el-radio-button label="500" >500万</el-radio-button>
+                    <el-radio-button label="1000" >1000万</el-radio-button>
+                    <el-radio-button label="more" >1000万以上</el-radio-button>
+                </el-radio-group>
+            </el-form-item>
+        </el-form>
+        <el-row>
+            <el-col :span="24" v-for="o in tableData" :key="o.id">
+                <li class="am-g am-list-item-desced" style="height:190px;">
+                    <div class="am-list-item-hd" style="padding-top:20px;padding-bottom:20px;"><img class="prologo-img"
+                                                                                                    :src="'http://218.22.70.146:8082//'+o.logoname"><a
+                            class="proname-a" style="">{{o.productname}}</a>
+                        <span v-if="o.guarantytype==3" class="am-badge fipro-am-badge" style="">保证</span>
+                        <span v-if="o.guarantytype==4" class="am-badge fipro-am-badge" style="">信用</span>
+                        <span v-if="o.guarantytype==-1" class="am-badge fipro-am-badge" style="">不限</span>
+                        <span v-if="o.guarantytype==1" class="am-badge fipro-am-badge" style="">抵押</span>
+                        <span v-if="o.guarantytype==2" class="am-badge fipro-am-badge" style="">质押</span>
+                    </div>
+                    <div class="am-list-item-text" style="padding-left:60px;max-height:none;">
+                        <ul class="am-avg-sm-5 am-thumbnails prodetail-ul" style="">
+                            <li style="padding-top:10px;text-align:left;"><span
+                                    style="font-size:28px;color:#ea2629">{{o.ratelower}}</span><span
+                                    style="font-size:14px;color:#ea2629">%-</span><span
+                                    style="font-size:28px;color:#ea2629">{{o.rateupper}}</span><span
+                                    style="font-size:14px;color:#ea2629">%</span><br>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">参考利率范围</p></li>
+                            <li style="padding-top:10px;padding-left:70px;"><p
+                                    style="color:#333;font-size:18px;line-height:23px;">
+                                {{o.durationlower}}-{{o.durationupper}}个月</p>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">贷款期限</p></li>
+                            <li style="padding-top:10px;padding-left:30px;"><p
+                                    style="color:#333;font-size:18px;line-height:23px;">
+                                {{o.loanamountlower}}-{{o.loanamountupper}}万</p>
+                                <p style="color:#999;font-size:14px;margin-top: 20px;">贷款额度</p></li>
+                            <li style="padding-top:10px;">
+                                <el-progress :text-inside="true" :stroke-width="18"
+                                             :percentage="o.completeRate"></el-progress>
+                                <p style="color:#999;font-size:14px;">成功率{{o.completeRate}}%</p></li>
+                            <li style="padding-top:10px;text-align:center;padding-top:6px;"><a id="20151202000000003"
+                                                                                               class="am-btn am-btn-danger prodetail-a"
+                                                                                               style=""
+                                                                                               :href="'/item.html?id='+o.id"
+                                                                                               data-key="B20191106083936"
+                            >了解详情</a>
+                                <p style="color:#999;font-size:14px;margin-top: 0.6rem;">{{o.applyNum}}家企业申请</p></li>
+                        </ul>
+                    </div>
+                </li>
+            </el-col>
+        </el-row>
+
+        <el-pagination
+                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="formInline.currentPage"
+                :page-size="formInline.rows"
+                :page-sizes="[10, 20, 30]"
+                layout="sizes,prev, pager, next"
+                :total="total">
+        </el-pagination>
+
+    </el-main>
+
+    <el-footer>
+        本页面未违反爬虫协议,如有问题请联系我删除
+    </el-footer>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                dialogVisible: false,
+                DataSelect: '',
+                formInline: {
+                    queryname: '',
+                    financename: '',
+                    currentPage: 1,//默认显示第一页
+                    rows: 10,
+                    loandate: '',
+                    guatype: '',
+                    financeChannel: '',
+                    loanLimit: '',
+                },
+                tableData: [],  //数据
+                records: [],
+                current: 1,
+                total: 1, //总页数
+                formData: [],
+                activeIndex: '1',
+                activeIndex2: '1',
+                isDisabled2: false,
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+
+            };
+        },
+        created: function () {
+            this.doQuery();
+        },
+
+        methods: {
+            dateFormat: function (row, column) {
+                var date = row[column.property];
+                //console.log(date)
+                if (date === undefined) {
+                    return "";
+                }
+                return new Date(date).toLocaleDateString('zh').replace(RegExp(/\//g), '-');
+            },
+            select(e) {
+                //if (e.target.tagName === 'INPUT') return
+                this.formInline.currentPage = 1;
+                this.doQuery();
+            },
+            handleClick(item) {
+                // this.formData = {
+                //     ...item
+                // }
+                this.dialogVisible = true;
+
+            },
+            doQuery() {
+                axios.post('/jr/select', this.formInline)
+                    .then(response => {
+                        if (response.data.status === 20) {
+                            this.tableData = response.data.data.records;
+                            this.formInline.currentPage = response.data.data.current;
+                            this.total = response.data.data.total;
+                        }
+                    })
+            },
+
+            handleSizeChange(val) {
+                this.formInline.rows = val
+                this.doQuery();
+            },
+
+            handleCurrentChange(val) {
+                this.formInline.currentPage = val;
+                this.doQuery();
+            },
+
+
+            // click() {
+            //     this.formInline.currentPage = 1;
+            //     if (this.DataSelect != "" || this.DataSelect != undefined) {
+            //         this.formInline.beginDate = this.DataSelect[0];
+            //         this.formInline.endDate = this.DataSelect[1];
+            //     }
+            //     this.doQuery();
+            // }
+        }
+    })
+</script>

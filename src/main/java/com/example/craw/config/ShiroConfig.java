@@ -23,19 +23,20 @@ public class ShiroConfig {
          * user 如果使用rememberMe的功能才能直接访问
          * role 该资源必须得到角色权限才能访问
          */
-      //  filerMap.put("/testThy","anon");
-       // filerMap.put("/login","anon");
-       // filerMap.put("/index.html","anon");
-        //filerMap.put("*.js","anon");
-      //  filerMap.put("*.css","anon");
-       // filerMap.put("/My97DatePicker/**","anon");
 
+        filerMap.put("/login.html","anon");
+        filerMap.put("/reg.html","anon");
+        filerMap.put("/index.html","anon");
+        filerMap.put("/**.js","anon");
+        filerMap.put("/**.css","anon");
+
+        filerMap.put("/av.html","authc");
         //授权过滤器
         //filerMap.put("/add","perms[user:add]");
        // filerMap.put("/update","perms[user:update]");
-        filerMap.put("/*","anon");
-        //shiroFilterFactoryBean.setLoginUrl("/toLogin");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");//未授权的401页面替换
+        filerMap.put("/","anon");
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");//未授权的401页面替换
        shiroFilterFactoryBean.setFilterChainDefinitionMap(filerMap);
         return shiroFilterFactoryBean;
     }
@@ -63,9 +64,5 @@ public class ShiroConfig {
         return new UserRealm();
 
     }
-    //整合shirodialect
-//    @Bean
-//    public ShiroDialect shiroDialect(){
-//        return new ShiroDialect();
-//    }
+
 }

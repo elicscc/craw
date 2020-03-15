@@ -17,28 +17,6 @@ import org.springframework.context.annotation.Configuration;
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
-    /**
-     * 授权
-     *
-     * @param principalCollection
-     * @return
-     */
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.err.println("开始授权");
-
-
-        //添加授权字符串
-        SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
-      //  info.addStringPermission("user:add");
-        Subject subject= SecurityUtils.getSubject();
-        User currentUser = (User)subject.getPrincipal();
-        //设置当前用户的权限
-        info.addStringPermission(currentUser.getPerms());
-        return info;
-    }
-
-
 
     /**
      * 认证
@@ -52,11 +30,30 @@ public class UserRealm extends AuthorizingRealm {
         System.err.println("开始认证");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         User user = userService.findByName(token.getUsername());
-
         if (user == null) {
             return null;
         }
         SecurityUtils.getSubject().getSession().setAttribute("loginUser",user);
         return new SimpleAuthenticationInfo(user, user.getPassword(), "");
+    }
+
+
+    /**
+     * 授权
+     *
+     * @param principalCollection
+     * @return
+     */
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        System.err.println("开始授权");
+        //添加授权字符串
+        SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
+      //  info.addStringPermission("user:add");
+        Subject subject= SecurityUtils.getSubject();
+        User currentUser = (User)subject.getPrincipal();
+        //设置当前用户的权限
+        info.addStringPermission(currentUser.getPerms());
+        return info;
     }
 }

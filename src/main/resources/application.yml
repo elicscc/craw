@@ -4,8 +4,7 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql:///crawfilm?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username:
-    password:
+
 #    username: root
 #    password: root
 redis:

@@ -254,7 +254,6 @@
         created: function() {
             this.doQuery();
         },
-
         methods: {
             dateFormat: function(row, column){
                 var date = row[column.property];
@@ -264,7 +263,6 @@
                 }
                 return new Date(date).toLocaleDateString('zh').replace(RegExp(/\//g),'-');
             },
-
             sh() {
                 this.isDisabled2=true;
                 axios.get('/gz/pa')
@@ -301,19 +299,14 @@
                         }
                     })
             },
-
             handleSizeChange(val) {
                 this.formInline.rows=val
                 this.doQuery();
             },
-
             handleCurrentChange(val) {
                 this.formInline.currentPage=val;
                 this.doQuery();
             },
-
-
-
             click(){
                 this.formInline.currentPage=1;
               if (this.DataSelect!=""||this.DataSelect!=undefined){
