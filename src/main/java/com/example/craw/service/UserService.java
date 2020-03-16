@@ -10,4 +10,5 @@ public interface UserService {
      User findById(Long id);
      Integer updateUser(User user);
     List<User> findAll();
+    void save(User user);
 }

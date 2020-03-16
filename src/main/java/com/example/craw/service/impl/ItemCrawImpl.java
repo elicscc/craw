@@ -40,12 +40,7 @@ public class ItemCrawImpl  extends ServiceImpl<ItemMapper, Item> implements Item
              System.out.println(data2);
             List<Item> list = JSONArray.parseArray(data2, Item.class);
               System.out.println(list);
-            // Collectors.toList方法是获取list类型的收集器  distinct方法进行去重  collect进行转换
-            //List<Agency> list2 = list.stream().distinct().collect(Collectors.toList());
             itemCraw.saveOrUpdateBatch(list);
-            //  System.out.println(list);
-            // System.out.println(list2.size());
-            //System.out.println(list2);
         }
 
     }
