@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 public class UserRealm extends AuthorizingRealm {
@@ -65,13 +66,12 @@ public class UserRealm extends AuthorizingRealm {
         }
         ByteSource slat=ByteSource.Util.bytes(user.getSalt());
         SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(
-                user,//身份
+                user,
                 user.getPassword(),
                 slat,
                 getName());
         return info;
     }
-
 
     /**
      * 授权
@@ -81,9 +81,15 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.err.println("开始授权");
-        //添加授权字符串
-
+        /**
+         * 1、获取登录用户id
+         * 2、基于用户id获取对应的角色并判断
+         * 3、基于角色id获取对应的菜单并判断
+         * 4、基于菜单id获取对应的权限标识并判断
+         * 5、封装结果并返回
+         */
+        User user = (User)principalCollection.getPrimaryPrincipal();
+        //List<Integer> role=
         return null;
     }
 }

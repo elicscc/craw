@@ -39,7 +39,10 @@ public class ShiroConfig {
          * role 该资源必须得到角色权限才能访问
          */
         filerMap.put("/login.html", "anon");
+        filerMap.put("/starter.html", "anon");
         filerMap.put("/reg.html", "anon");
+        filerMap.put("/sys/**", "anon");
+        filerMap.put("/common/**", "anon");
         filerMap.put("/jr.html", "anon");
         filerMap.put("/gz/**", "anon");
         filerMap.put("/jr/**", "anon");
@@ -48,8 +51,10 @@ public class ShiroConfig {
         filerMap.put("/item.html", "anon");
         filerMap.put("/index.html", "anon");
         filerMap.put("/", "anon");
-        filerMap.put("/**.js", "anon");
-        filerMap.put("/**.css", "anon");
+        filerMap.put("/**/*.js", "anon");
+        filerMap.put("/**/*.css", "anon");
+        filerMap.put("/**/*.jpg", "anon");
+        filerMap.put("/**/*.png", "anon");
         filerMap.put("/**", "authc");
         filerMap.put("/user/logout", "logout");
         //授权过滤器

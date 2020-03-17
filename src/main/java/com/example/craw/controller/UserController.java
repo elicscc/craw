@@ -38,18 +38,14 @@ public class UserController extends BaseController {
      */
     @PostMapping("/login")
     public JsonResult login(@RequestBody User user) {
-        System.err.println("进入login");
         Subject subject = SecurityUtils.getSubject();
-        System.err.println("进入login  2");
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-        System.err.println("进入login  3");
         subject.login(token);
         return new JsonResult(SUCCESS,"成功", null);
     }
 
     @PostMapping("/reg")
     public JsonResult reg(@RequestBody User user) {
-        System.err.println("进入reg");
         User byName = userService.findByName(user.getUsername());
         if (null!=byName){
             throw new  RuntimeException("用户名已存在");
