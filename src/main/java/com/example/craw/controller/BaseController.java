@@ -2,7 +2,13 @@ package com.example.craw.controller;
 
 import java.io.IOException;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.craw.service.ex.EmptyException;
@@ -10,6 +16,7 @@ import com.example.craw.service.ex.EmptyException;
 /**
  * 所用控制器类的父类
  */
+@ControllerAdvice
 public abstract class BaseController {
 
     protected static final Integer SUCCESS = 20;
@@ -22,7 +29,7 @@ public abstract class BaseController {
      * @param e 异常对象
      * @return JsonResult封装响应信息
      */
-    @ExceptionHandler({EmptyException.class, IOException.class, RuntimeException.class})
+    @ExceptionHandler({ IOException.class, RuntimeException.class})
     @ResponseBody
     public JsonResult handlerException(Throwable e) {
         // 根据不同异常的类型提供不同的处理方式
@@ -74,8 +81,22 @@ public abstract class BaseController {
 //        } else if (e instanceof FileIOException) {
 //            jr.setStatus(54);
 //        }
-
         return jr;
     }
+
+    @ExceptionHandler(ShiroException.class)
+    @ResponseBody
+    public JsonResult doShiroException(ShiroException e){
+        JsonResult jr = new JsonResult();
+        if (e instanceof IncorrectCredentialsException){
+            jr.setMessage("用户名或密码不正确");
+            jr.setStatus(404);
+        }else  if (e instanceof AuthenticationException){
+            jr.setMessage("用户不存在");
+            jr.setStatus(404);
+        }
+        return jr;
+    }
+
 
 }

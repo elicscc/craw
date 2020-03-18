@@ -2,6 +2,7 @@ package com.example.craw.config;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.craw.controller.BaseController;
 import com.example.craw.domain.User;
 import com.example.craw.mapper.UserMapper;
 import com.example.craw.service.UserService;
@@ -48,7 +49,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.err.println("开始认证");
+        //System.err.println("开始认证");
         /**
          *  获取用户提交的身份信息
          *  基于身份信息查询数据库用户
@@ -62,14 +63,14 @@ public class UserRealm extends AuthorizingRealm {
         queryWrapper.eq("username",username);
         User user = userMapper.selectOne(queryWrapper);
         if (null==user){
-            throw  new RuntimeException("不存在的用户");
+            throw  new  AuthenticationException();
         }
         ByteSource slat=ByteSource.Util.bytes(user.getSalt());
         SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(
                 user,
                 user.getPassword(),
                 slat,
-                getName());
+                this.getName());
         return info;
     }
 
